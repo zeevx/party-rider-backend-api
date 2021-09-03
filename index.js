@@ -7,7 +7,7 @@ const cors = require("cors");
 // Port
 const PORT = process.env.PORT;
 
-//Initiate
+// Initiate
 const app = express();
 
 
@@ -19,7 +19,14 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes
 app.get("/", (req, res) => {
-    res.json({ message: "App is running on http://localhost:" + PORT + " now"});
+    res.json({ message: `App is running on ${PORT}` });
+});
+require("./src/Routers")(app);
+
+//Sync Sequelize
+const db = require("./src/Models");
+db.sequelize.sync({ force: true }).then(() => {
+    console.log("Database dropped and re-sync successfully.");
 });
 
 
